@@ -9,8 +9,11 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Drivers/STM32F1xx_HAL_Driver/subdir.mk
+-include Middlewares/USB_Device_Library/subdir.mk
+-include Drivers/STM32F4xx_HAL_Driver/subdir.mk
 -include Drivers/CMSIS/subdir.mk
+-include Application/User/USB_DEVICE/Target/subdir.mk
+-include Application/User/USB_DEVICE/App/subdir.mk
 -include Application/User/Startup/subdir.mk
 -include Application/User/Core/subdir.mk
 -include objects.mk
@@ -35,40 +38,40 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Expansion_board_F103
+BUILD_ARTIFACT_NAME := Expansion_board_F401
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Expansion_board_F103.elf \
+Expansion_board_F401.elf \
 
 MAP_FILES += \
-Expansion_board_F103.map \
+Expansion_board_F401.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Expansion_board_F103.list \
+Expansion_board_F401.list \
 
 OBJCOPY_HEX += \
-Expansion_board_F103.hex \
+Expansion_board_F401.hex \
 
 OBJCOPY_BIN += \
-Expansion_board_F103.bin \
+Expansion_board_F401.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Expansion_board_F103.elf secondary-outputs
+main-build: Expansion_board_F401.elf secondary-outputs
 
 # Tool invocations
-Expansion_board_F103.elf Expansion_board_F103.map: $(OBJS) $(USER_OBJS) D:\C_Projects\STM32\Expansion_board_F103\STM32CubeIDE\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Expansion_board_F103.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\C_Projects\STM32\Expansion_board_F103\STM32CubeIDE\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Expansion_board_F103.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Expansion_board_F401.elf Expansion_board_F401.map: $(OBJS) $(USER_OBJS) D:\C_Projects\STM32\Expansion_board_F401\STM32CubeIDE\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Expansion_board_F401.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\C_Projects\STM32\Expansion_board_F401\STM32CubeIDE\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Expansion_board_F401.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -77,24 +80,24 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Expansion_board_F103.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Expansion_board_F103.list"
+Expansion_board_F401.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Expansion_board_F401.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Expansion_board_F103.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "Expansion_board_F103.hex"
+Expansion_board_F401.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "Expansion_board_F401.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Expansion_board_F103.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Expansion_board_F103.bin"
+Expansion_board_F401.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Expansion_board_F401.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Expansion_board_F103.bin Expansion_board_F103.elf Expansion_board_F103.hex Expansion_board_F103.list Expansion_board_F103.map default.size.stdout
+	-$(RM) Expansion_board_F401.bin Expansion_board_F401.elf Expansion_board_F401.hex Expansion_board_F401.list Expansion_board_F401.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)

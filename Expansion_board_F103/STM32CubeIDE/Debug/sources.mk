@@ -26,6 +26,9 @@ OBJCOPY_BIN :=
 SUBDIRS := \
 Application/User/Core \
 Application/User/Startup \
+Application/User/USB_DEVICE/App \
+Application/User/USB_DEVICE/Target \
 Drivers/CMSIS \
-Drivers/STM32F1xx_HAL_Driver \
+Drivers/STM32F4xx_HAL_Driver \
+Middlewares/USB_Device_Library \
 
